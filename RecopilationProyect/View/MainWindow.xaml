@@ -1,0 +1,101 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ViewModels="clr-namespace:RecopilationProyect.ViewModels" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:RecopilationProyect_UniformBoard="clr-namespace:RecopilationProyect.UniformBoard" xmlns:RecopilationProyect_View_Converters="clr-namespace:RecopilationProyect.View.Converters" mc:Ignorable="d" x:Class="RecopilationProyect.MainWindow" Height="392" Width="719" WindowState="Maximized" Title="Recopilation Project" Foreground="White" Background="#FF434343">
+	<Window.Resources>
+		<RecopilationProyect_View_Converters:BooleanInvertConverter x:Key="BooleanInvertConverter"/>
+	</Window.Resources>
+	<Window.DataContext>
+        <ViewModels:MainViewModel/>
+	</Window.DataContext>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="88" />
+			<RowDefinition Height="60.98" />
+			<RowDefinition Height="52.91"/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+        
+		<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0,0,0">
+			<StackPanel Orientation="Horizontal" d:LayoutOverrides="Width">
+				<TextBlock TextWrapping="Wrap" Text="Size:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				<TextBox TextWrapping="Wrap" Text="{Binding Size, Mode=TwoWay}" Margin="4,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" d:LayoutOverrides="Width" Margin="8,0,0,0">
+				<TextBlock TextWrapping="Wrap" Text="Turns:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				<TextBox TextWrapping="Wrap" Text="{Binding Turns, Mode=TwoWay}" Margin="4,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+			</StackPanel>
+			<StackPanel Orientation="Vertical" Width="101.98" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="4,0,0,0">
+				<CheckBox x:Name="viewGridLines" Content="View Grid Lines" VerticalAlignment="Center" d:LayoutOverrides="Width"/>
+				<CheckBox x:Name="animate" Content="Animate" Margin="0,10,0,0" IsChecked="True"/>
+			</StackPanel>
+			<Separator Height="Auto" Margin="7,4,0,4"/>
+			<StackPanel Orientation="Horizontal" d:LayoutOverrides="Width" Margin="7,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+				<TextBlock TextWrapping="Wrap" Text="Teams:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				<TextBox TextWrapping="Wrap" Text="{Binding Teams, Mode=TwoWay}" Margin="4,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" d:LayoutOverrides="Width" Margin="20,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+				<TextBlock TextWrapping="Wrap" Text="Agents per team:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				<TextBox TextWrapping="Wrap" Text="{Binding AgentsPerTeam, Mode=TwoWay}" Margin="4,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+			</StackPanel>
+			<ListBox Margin="10,0,0,0" ItemsSource="{Binding TeamsInfo}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Left"/>
+        
+		</StackPanel>
+		<TabControl Grid.Row="1" SelectedIndex="{Binding Mode, Mode=TwoWay, UpdateSourceTrigger=Default}">
+			<TabItem Header="Automatic" IsEnabled="{Binding IsSimulating, Converter={StaticResource BooleanInvertConverter}}">
+				<Grid>
+					<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0,0,0">
+						<TextBlock TextWrapping="Wrap" Text="Step Delay:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						<TextBox TextWrapping="Wrap" Text="{Binding StepDelay, Mode=TwoWay}" BorderThickness="4,4,4,2" Margin="2,2,0,2"/>
+						<TextBlock TextWrapping="Wrap" Text="ms" Margin="4,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+					</StackPanel>
+				</Grid>
+			</TabItem>
+			<TabItem Header="Step by Step" IsEnabled="{Binding IsSimulating, Converter={StaticResource BooleanInvertConverter}}">
+				<Grid>
+					<Button Content="Next Step" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="8,0,0,0" Command="{Binding NextStepCommand}" Padding="4"/>
+				</Grid>
+			</TabItem>
+		</TabControl>
+        <Grid Grid.Row="2">
+        	<Grid.ColumnDefinitions>
+        		<ColumnDefinition Width="288"/>
+        		<ColumnDefinition/>
+        	</Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" VerticalAlignment="Center" >
+                <Button Content="Start Simulaton" VerticalAlignment="Bottom" HorizontalAlignment="Left"  Command="{Binding StartSimulationCommand}" Padding="4" Margin="6,0,0,0"/>
+                <Button Content="Stop Simulation" VerticalAlignment="Bottom" HorizontalAlignment="Left" Grid.Row="2" Command="{Binding StopSimulationCommand}" Padding="4" Margin="6,0,0,0"/>
+                <StackPanel HorizontalAlignment="Left"  Orientation="Horizontal" Margin="8,0,0,0">
+                    <TextBlock TextWrapping="Wrap" Text="{Binding SimulationManager.CurrentTurns}" d:LayoutOverrides="Height" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock TextWrapping="Wrap" Text="/" d:LayoutOverrides="Height" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock TextWrapping="Wrap" Text="{Binding SimulationManager.Turns}" d:LayoutOverrides="Height" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
+            <ProgressBar Maximum="{Binding SimulationManager.Turns}" Value="{Binding SimulationManager.CurrentTurns}" Grid.Column="1" VerticalAlignment="Center" Height="29" Margin="0,0,10,0"/>
+        </Grid>
+        <Grid Grid.Row="3">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="0.79*"/>
+				<ColumnDefinition Width="0.21*"/>
+			</Grid.ColumnDefinitions>
+			<Border Margin="4" BorderThickness="1" CornerRadius="2" BorderBrush="#FFC8C7C7">
+				<ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemsSource="{Binding SimulationManager.Map.AllItems}" HorizontalContentAlignment="Center" BorderBrush="{x:Null}" ItemContainerStyle="{DynamicResource ListBoxItemStyle}">					  
+                    <ListBox.Style>
+                        <Style TargetType="{x:Type ListBox}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <RecopilationProyect_UniformBoard:UniformBoard IsItemsHost="True" Rows="{Binding Size}" Columns="{Binding Size}" LineBrush="#FFE2D2D2" ShowLines="{Binding IsChecked, ElementName=viewGridLines, Mode=TwoWay}" Animate="{Binding IsChecked ,ElementName=animate, Mode=TwoWay}"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.Style>
+				</ListBox>
+			</Border>
+			<ItemsControl Grid.Column="1" Margin="7,24.96,7,4" ItemsSource="{Binding SimulationManager.TeamManagerManagers}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" BorderBrush="#FFC7C6C6" BorderThickness="1" Padding="4"/>
+			<TextBlock Grid.Column="1" Margin="8,5,8,0" TextWrapping="Wrap" Text="Teams State" VerticalAlignment="Top" FontWeight="Bold"/>
+		</Grid>
+        
+	</Grid>
+</Window>

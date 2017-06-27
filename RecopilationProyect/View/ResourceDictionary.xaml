@@ -1,0 +1,185 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:UniformBoard="clr-namespace:RecopilationProyect.UniformBoard"
+	xmlns:Models="clr-namespace:RecopilationProyect.Models"
+	xmlns:Converters="clr-namespace:RecopilationProyect.View.Converters" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:ViewModels="clr-namespace:RecopilationProyect.ViewModels" xmlns:System="clr-namespace:System;assembly=mscorlib"
+	mc:Ignorable="d">
+	
+	<!-- Resource dictionary entries should be defined here. -->
+    <Converters:IntToColorConverter x:Key="intToColorConverter" />
+    
+    <DataTemplate DataType="{x:Type Models:Mineral}">
+        <Grid>
+            <Image Source="/RecopilationProyect;component/Images/mineral.png" RenderTransformOrigin="0.5,0.5">
+            	<Image.RenderTransform>
+            		<TransformGroup>
+            			<ScaleTransform ScaleX="0.7" ScaleY="0.7"/>
+            			<SkewTransform/>
+            			<RotateTransform/>
+            			<TranslateTransform/>
+            		</TransformGroup>
+            	</Image.RenderTransform>
+            </Image>
+            <Grid.ToolTip>
+                <StackPanel>
+                    <ContentControl Content="{Binding}"/>
+                    <TextBlock Text="Mineral" FontWeight="Bold"/>
+                </StackPanel>
+            </Grid.ToolTip>
+
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type Models:AgentBase}">
+        <Grid x:Name="grid" Tag="{Binding Direction}" RenderTransformOrigin="0.5,0.5">
+            <Grid x:Name="normal" RenderTransformOrigin="0.5,0.5">
+            	<Grid.RenderTransform>
+            		<TransformGroup>
+            			<ScaleTransform ScaleX="0.75" ScaleY="0.75"/>
+            			<SkewTransform/>
+            			<RotateTransform/>
+            			<TranslateTransform/>
+            		</TransformGroup>
+            	</Grid.RenderTransform>
+            	<Path Stretch="Uniform" StrokeLineJoin="Round" Data="F1 M 0.499938,28.5798L 11.9985,18.581L 12.1651,12.7484L 8.83223,8.83221L 10.7487,6.08258L 15.5814,9.49878L 15.8314,1.99976L 16.9145,0.499939L 18.7477,0.499939L 19.7475,9.99872L 23.4137,9.99872L 23.3304,0.499939L 26.0801,0.499939L 27.2466,7.74902L 32.3293,5.91589L 33.9957,9.74878L 29.3297,13.165L 29.4963,17.9144L 43.1613,28.3298L 43.1613,29.413L 28.4964,29.4963L 29.8296,34.9123L 28.4964,36.4954L 22.7472,29.9962L 19.3309,30.0795L 15.998,36.4954L 14.3315,34.6623L 14.9981,29.9129L 12.4151,27.2466L 5.24934,31.496L 1.66646,31.2461L 0.499938,28.5798 Z " Fill="{Binding TeamNumber, Converter={StaticResource intToColorConverter}}" Stroke="{Binding TeamNumber, Converter={StaticResource intToColorConverter}}"/>
+        		<Image  Source="/RecopilationProyect;component/Images/agent_empty.png" />
+        	</Grid>
+			<Grid x:Name="isCarring" Opacity="0" RenderTransformOrigin="0.5,0.5">
+				<Path Stretch="Uniform" StrokeLineJoin="Round" Data="F1 M 13.8317,28.9964L 13.0818,27.7466L 10.6654,27.6633L 6.08263,29.163L 0.5,29.413L 0.5,24.7469L 11.4153,17.4145L 12.1652,17.4146L 12.1652,11.9985L 8.16571,8.16565L 9.16558,4.49945L 13.1651,4.58276L 14.7482,6.83252L 14.9149,0.583313L 17.8312,0.666626L 19.4976,8.08234L 21.8307,8.24902L 23.0805,0.5L 27.33,0.5L 27.33,6.91583L 28.1632,6.83252L 31.1628,4.49945L 34.5791,7.49908L 30.163,13.5817L 42.0781,25.9135L 42.0781,30.8295L 38.7452,30.8295L 32.246,26.58L 30.4129,26.6634L 29.4964,29.163L 20.9974,54.0766L 13.8317,28.9964 Z "  Fill="{Binding TeamNumber, Converter={StaticResource intToColorConverter}}" Stroke="{Binding TeamNumber, Converter={StaticResource intToColorConverter}}"/>
+				<Image   Source="/RecopilationProyect;component/Images/agent_carriyng.png"/>                			
+			</Grid>
+            <Grid.ToolTip>
+                <StackPanel>
+                    <ContentControl Content="{Binding}"/>
+                    <TextBlock Text="Agent" FontWeight="Bold"/> 
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Team: "/>
+                        <TextBlock Text="{Binding TeamNumber}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid.ToolTip>
+        </Grid>
+        <DataTemplate.Triggers>
+    		<DataTrigger Binding="{Binding IsCarrying}" Value="true">
+    			<Setter TargetName="isCarring" Property="Opacity" Value="1"/>
+    			<Setter TargetName="normal" Property="Opacity" Value="0"/>
+    		</DataTrigger>
+    		<DataTrigger Binding="{Binding Direction}" Value="1">
+                <Setter Property="RenderTransform" TargetName="grid">
+                    <Setter.Value>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="90"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Direction}" Value="2">
+                <Setter Property="RenderTransform" TargetName="grid">
+                    <Setter.Value>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="180"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Direction}" Value="3">
+                <Setter Property="RenderTransform" TargetName="grid">
+                    <Setter.Value>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="-90"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+    	</DataTemplate.Triggers>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type Models:Storage}">
+    	<Grid>
+            <Path x:Name="Path" Width="Auto" Height="Auto" Stretch="Uniform" StrokeLineJoin="Round" Data="M 9.11691,98.0642L 9.22801,93.9536L 12.2276,86.2879L 12.2276,68.8456L 5.00632,62.0687L 5.11741,50.6257L 14.894,38.6272L 24.7816,38.6272L 25.3371,45.293L 33.5583,40.9603L 39.8908,40.8492L 36.4468,56.4028L 55.5555,64.0685L 61.6659,64.1796L 66.6653,60.8467L 73.5533,60.8467L 75.6641,59.6246L 75.8863,50.4035L 85.2185,41.849L 88.2181,33.5167L 88.3292,3.18723L 91.6621,0.5L 100.217,0.5L 103.327,6.96452L 105.549,40.8492L 113.215,48.2927L 113.993,59.2913L 124.436,66.6237L 148.433,58.5136L 154.988,58.6247L 154.988,55.8473L 152.321,53.0699L 152.543,43.9599L 161.431,44.2932L 161.431,36.9608L 170.541,36.9608L 179.762,48.5149L 180.207,57.9581L 183.54,97.0644L 195.975,109.285L 195.975,117.284L 186.317,126.616L 168.208,127.061L 167.875,131.727L 159.209,137.393L 161.653,141.614L 162.32,138.726L 166.986,139.615L 176.652,153.946L 181.873,167.833L 182.095,174.944L 171.541,174.61L 130.546,162.834L 125.102,163.167L 115.992,163.834L 114.659,167.278L 114.548,173.721L 104.883,181.811L 98.8835,181.811L 98.1058,177.277L 96.2171,177.165L 96.2171,181.811L 89.9957,181.811L 79.2193,170.833L 78.2194,162.278L 73.5533,162.167L 66.5542,167.722L 61.6659,167.833L 53.2225,161.056L 15.2273,177.61L 6.33949,177.61L 7.00607,163.612L 9.8946,158.946L 10.1168,151.502L 16.2271,145.281L 16.6715,139.059L 19.3379,138.726L 15.7828,136.726L 25.1149,126.616L 26.6703,125.727L 25.5593,124.172L 7.89485,124.061L 7.45046,122.395L 1.7845,121.172L 3.97364e-008,118.728L 3.97364e-008,108.063L 2.0067,107.619L 2.45109,100.731L 9.11691,98.0642 Z " Fill="{Binding TeamNumber, Converter={StaticResource intToColorConverter}}" Stroke="{Binding TeamNumber, Converter={StaticResource intToColorConverter}}"/>
+                <Image Source="/RecopilationProyect;component/Images/storage.png"/>
+			<Grid.ToolTip>
+				<StackPanel>
+					<ContentControl Content="{Binding}"/>
+                    <TextBlock Text="Storage" FontWeight="Bold"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Team: "/>
+                        <TextBlock Text="{Binding TeamNumber}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Minerals: "/>
+                        <TextBlock Text="{Binding CollectedMinerals}"/>
+                    </StackPanel>
+                </StackPanel>
+			</Grid.ToolTip>
+		</Grid>
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type ViewModels:TeamInfoViewModel}">
+        <Grid Height="Auto" Width="Auto" Background="#00000000">
+        	<Grid.RowDefinitions>
+        		<RowDefinition Height="*"/>
+        	</Grid.RowDefinitions>
+        	<Grid.ColumnDefinitions>
+        		<ColumnDefinition Width="39"/>
+        		<ColumnDefinition Width="25.25"/>
+        		<ColumnDefinition Width="35.25"/>
+        		<ColumnDefinition Width="*"/>
+        	</Grid.ColumnDefinitions>
+    		<TextBlock Text="Team:" HorizontalAlignment="Right" Height="15.96" VerticalAlignment="Center"/>
+    		<TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Grid.RowSpan="1" Grid.Column="1" Height="15.96" VerticalAlignment="Center"/>
+    		<TextBlock Grid.Row="0" Text="Type:" HorizontalAlignment="Right" Grid.Column="2" VerticalAlignment="Center"/>
+            <ComboBox Grid.Column="3" Grid.Row="0" d:LayoutOverrides="Height" HorizontalAlignment="Stretch" SelectedItem="{Binding Type}" ItemsSource="{Binding DataContext.AgentsTypes, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Grid.ColumnSpan="1" Margin="5,0,0,0"/>        
+    	</Grid>        
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type System:Type}">
+        <TextBlock Text="{Binding Name}"/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type Models:TeamManager}">
+        <Border CornerRadius="4" BorderThickness="1" Background="{x:Null}" BorderBrush="Black" Padding="4">
+        	<StackPanel Height="Auto" Width="Auto" Orientation="Horizontal">
+        		<TextBlock TextWrapping="Wrap" Text="{Binding NumberOfTeam}" VerticalAlignment="Center"/>
+                <Rectangle Stroke="Black" Width="20" Margin="4" Height="20" Fill="{Binding NumberOfTeam, Converter={StaticResource intToColorConverter}}"/>
+                <TextBlock TextWrapping="Wrap" Text="Collected: " VerticalAlignment="Center"/>
+                <TextBlock TextWrapping="Wrap" Text="{Binding Storage.CollectedMinerals}" VerticalAlignment="Center"/>
+                <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="4,0,0,0" Text="Type:"/>
+                <ContentControl Content="{Binding Type}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="4,0,0,0"/>
+            </StackPanel>
+        </Border>        
+    </DataTemplate>
+    <Style x:Key="ListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+    	<Setter Property="UniformBoard:UniformBoard.Row" Value="{Binding Position.X}"/>
+        <Setter Property="UniformBoard:UniformBoard.Column" Value="{Binding Position.Y}"/>
+    	<Setter Property="Background" Value="Transparent"/>
+    	<Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+    	<Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+    	<Setter Property="Padding" Value="2,0,0,0"/>
+    	<Setter Property="Template">
+    		<Setter.Value>
+    			<ControlTemplate TargetType="{x:Type ListBoxItem}">
+    				<Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+    					<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+    				</Border>
+    				<ControlTemplate.Triggers>
+    					<Trigger Property="IsEnabled" Value="false">
+    						<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+    					</Trigger>
+    				</ControlTemplate.Triggers>
+    			</ControlTemplate>
+    		</Setter.Value>
+    	</Setter>
+    </Style>
+</ResourceDictionary>
