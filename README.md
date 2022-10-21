@@ -5,4 +5,4 @@ Academic project for simulation several bot collecting minerals from the environ
 
 This project is WPF agent simulator. It is developed as an academic project, but think it have some interesting things, like a board (wpf panel) to display items by rows and colums. This could be useful for some board games.
 
-![Alt text](mineral-collect.jpg?raw=true "App Print Screen")
+![Alt text](simulation-mineral-collection.gif?raw=true "App Print Screen")
